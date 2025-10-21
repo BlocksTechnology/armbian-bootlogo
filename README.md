@@ -7,6 +7,8 @@ This simple script with bootsplash repacker are to assist users trying to replac
 You will need an x86-64 computer running Linux.
 Dependencies are: ImageMagick
 
+        sudo apt install imagemagick
+
 Be sure to install the dependencies with the package manager of your linux distribution.
 
 ## Instructions
@@ -32,3 +34,57 @@ That is the "hard" part over :)
 Now please just update your initramfs so the file is used on bootup. You can do this by entering this command: update-initramfs -v -u
 
 Now just reboot your device and you will see your new logo on boot :)
+
+
+# Guide
+
+
+**Important:
+Ensure that all .sh files are executable** 
+
+        sudo chmod +x create-bootsplash.sh 
+
+        sudo chmod +x create-gifSplash.sh
+### 1. Create Bootsplash with image and spinner
+
+1. The script expects a _.png_ file on the working directory with a custom image. 
+
+2. Run the script: 
+
+        ./create-bootsplash.sh
+
+3. After running the script a new file called `bootsplash.armbian` will be created, which will then need to be copied
+
+        On the working directory:
+        ---
+
+        sudo cp bootsplash.armbian /usr/lib/firmware/bootsplash.gif
+
+### 2. Create GIF Bootsplash
+
+1. The script expects a file called `animation.gif` on the working directory
+
+2. Run `create-gifSplash.sh` bash script 
+
+        ./create-gifSplash.sh
+
+3. After running the script a new file called `bootsplash.armbian` will be created, which will then need to be copied
+
+        On the working directory:
+        ---
+
+        sudo cp bootsplash.armbian /usr/lib/firmware/bootsplash.gif
+
+### 3. Update initramfs bootsplash hook 
+
+1. `sudo nano /etc/initramfs-tool/hooks/bootsplash`
+
+2. On the file add the following entry :
+
+            splashfile="/usr/local/lib/firmware/bootsplash.armbian"
+
+
+3. Update initramfs 
+
+            update-initramfs -u
+            update-initramfs -v -u
